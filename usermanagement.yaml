@@ -1,0 +1,46 @@
+---
+
+
+- hosts: all
+  become_user: root
+
+  tasks:
+    - name: add a group
+      group:
+       names={{ item }}
+       state=present
+      with_items:
+       - demogrp
+       - demogrp1
+       - demogrp2
+      tags: add_new_group
+
+    - name: add several users
+      user:
+       name={{ item }}
+       state=present
+       groups=demogrp
+       password='password'
+       shell=/bin/bash
+      with_items:
+       - demouser1
+       - demouser2
+       - demouser3
+      tags: add_new_user
+
+    - name: generate ssh keys for a user
+      user:
+       name={{ item }}
+       generate_ssh_keys=yes
+       ssh_key_bits=4096
+       ssh_key_files=.ssh/id_rsa
+      with_items:
+       - demouser1
+      tags: generate_ssh_keys
+
+    - name: update authorized keys for a user
+      authorized_key:
+       user: demouser1
+       state: present
+       key: "{{ lookup{'file', '/home/demouser1/.ssh/id_rsa.pub'} }}"
+      tags: copy_pub_key
