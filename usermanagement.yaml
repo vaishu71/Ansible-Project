@@ -20,7 +20,7 @@
        name={{ item }}
        state=present
        groups=demogrp
-       password='password'
+       password: "{{ password | password_hash('sha512') }}"
        shell=/bin/bash
       with_items:
        - demouser1
