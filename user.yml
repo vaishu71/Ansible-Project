@@ -1,0 +1,28 @@
+---
+
+- name: new user is created
+  hosts: node
+  become: true
+
+  vars:
+    username: test
+
+  tasks:
+    - name: user get created
+      user:
+        name: "{{ username }}"
+        state: present
+        shell: "/bin/bash"
+- name: new user is created
+  hosts: node2
+  become: true
+
+  vars:
+    username: test1
+
+  tasks:
+    - name: user get created
+      user:
+        name: "{{ username }}"
+        state: present
+        shell: "/bin/bash"
