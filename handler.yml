@@ -1,0 +1,16 @@
+---
+
+- hosts: webservers
+  become: yes
+  tasks:
+    - name: install http package on node
+      yum: name=httpd state=installed
+    - name: start the service on node
+      service: name=httpd state=started
+    - name: copy the template
+      template: src=/etc/ansible/playbooks/index.html dest=/var/www/html/index.html
+      notify:
+      - restart httpd
+  handlers:
+    - name: restart httpd
+      service: name=httpd state=restarted
