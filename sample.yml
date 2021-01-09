@@ -1,0 +1,14 @@
+---
+
+- hosts: webservers
+  become: true
+  tasks:
+  - name: create a user on node
+    user:
+      name: user1
+      comment: "user1 comment"
+      uid: 1040
+      groups: admin
+      password: $1$SomeSalt$k5UYVbFd5GjSpx3xzoHbH0
+      shell: "/bin/bash"
+
